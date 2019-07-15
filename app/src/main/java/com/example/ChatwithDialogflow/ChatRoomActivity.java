@@ -50,14 +50,18 @@ public class ChatRoomActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_room);
 
+        //define view
         btn_input = (ImageButton)findViewById(R.id.btn_input);
         ed_input = (EditText) findViewById(R.id.ed_input);
         response = (TextView) findViewById(R.id.tv_response);
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         linearLayoutManager.setStackFromEnd(true);
+
+        //set the layout of recyclerview
         recyclerView.setLayoutManager(linearLayoutManager);
 
         btn_input.setOnClickListener(doClick);
@@ -67,7 +71,7 @@ public class ChatRoomActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
 
-            //POST Request
+            //User Input and run POST Request
             sendMessage();
         }
     };
@@ -88,7 +92,7 @@ public class ChatRoomActivity extends AppCompatActivity {
 
             recyclerView.setAdapter(messageAdapter);
 
-
+            //task running
             RetrieveFeedTask task=new RetrieveFeedTask();
             task.execute(userQuery);
             Log.d(TAG, "AsyncTask invoked");
@@ -117,6 +121,7 @@ public class ChatRoomActivity extends AppCompatActivity {
 //        }
 //    }
 
+    // function connect with API.api and get json response
     public String GetResponse(String query) throws UnsupportedEncodingException{
 
         String text = "";
@@ -128,6 +133,7 @@ public class ChatRoomActivity extends AppCompatActivity {
             conn.setDoInput(true);
             conn.setDoOutput(true);
 
+            // Parameter, including Access token
             conn.setRequestProperty("Authorization", "Bearer " + "60e9b458dc2147ef94437dfdb0c62f2a");
             conn.setRequestProperty("Content-Type", "application/json");
 
@@ -137,6 +143,7 @@ public class ChatRoomActivity extends AppCompatActivity {
             jsonParam.put("query", queryArray);
 
             jsonParam.put("lang", "en");
+            //sessionId: random value
             jsonParam.put("sessionId", "1234567890");
 
             OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
@@ -180,6 +187,7 @@ public class ChatRoomActivity extends AppCompatActivity {
         return null;
     }
 
+    // Asynctask to run POST Request
     class RetrieveFeedTask extends AsyncTask<String, Void, String>{
 
         @Override

@@ -28,6 +28,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         this.mChat = mChat;
     }
 
+    //從getItemViewType取得sender or receiver, create diff type holder, viewType即return value
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -41,6 +42,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
     }
 
+    //每個holder顯示內容
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
@@ -53,6 +55,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         return mChat.size();
     }
 
+    //define item in holder
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView show_message;
@@ -63,6 +66,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         }
     }
 
+    //定義每個holder類型
     @Override
     public int getItemViewType(int position) {
         if(mChat.get(position).getType() == "sender")
