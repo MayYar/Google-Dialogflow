@@ -12,7 +12,31 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/recycler_view"
-        android:layout_above="@+id/bottom"/>
+        android:layout_above="@+id/report"/>
+
+
+    <Button
+        android:id="@+id/report"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bottom"
+        android:layout_marginLeft="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/hot_item"
+        android:text="立即回報"
+        android:textSize="14dp" />
+
+    <Button
+        android:id="@+id/question"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bottom"
+        android:layout_toRightOf="@+id/report"
+        android:layout_marginLeft="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/hot_item"
+        android:text="常見問題"
+        android:textSize="14dp" />
 
         <RelativeLayout
             android:id="@+id/bottom"
@@ -21,6 +45,8 @@
             android:background="#fff"
             android:padding="5dp"
             android:layout_alignParentBottom="true">
+
+
 
             <EditText
                 android:id="@+id/ed_input"

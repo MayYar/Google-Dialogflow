@@ -38,9 +38,11 @@ public class ChatRoomActivity extends AppCompatActivity {
     ImageButton btn_input;
     EditText ed_input;
     TextView response;
+    Button report, question;
 
     MessageAdapter messageAdapter;
     ArrayList<Chat> mchat = new ArrayList<>();
+    int action = 0;
 
     RecyclerView recyclerView;
     Intent intent;
@@ -54,6 +56,8 @@ public class ChatRoomActivity extends AppCompatActivity {
         btn_input = (ImageButton)findViewById(R.id.btn_input);
         ed_input = (EditText) findViewById(R.id.ed_input);
         response = (TextView) findViewById(R.id.tv_response);
+        report = (Button)findViewById(R.id.report);
+        question = (Button)findViewById(R.id.question);
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
@@ -65,28 +69,46 @@ public class ChatRoomActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(linearLayoutManager);
 
         btn_input.setOnClickListener(doClick);
+        report.setOnClickListener(doClick);
     }
 
     private Button.OnClickListener doClick = new Button.OnClickListener() {
         @Override
         public void onClick(View view) {
 
-            //User Input and run POST Request
-            sendMessage();
+            switch (view.getId()){
+                case R.id.btn_input:
+                    action = 0;
+                    //User Input and run POST Request
+                    sendMessage();
+                    break;
+                case R.id.report:
+                    action = 1;
+                    sendMessage();
+                    break;
+
+            }
+
         }
     };
 
     private void sendMessage() {
 //        Intent intent = new Intent();
 //        intent.putExtra("test", CUSTOM_POST_REQUEST);
+        String userQuery = ed_input.getText().toString();
 
         try {
-//            startActivityForResult(intent, CUSTOM_POST_REQUEST);
-            String userQuery = ed_input.getText().toString();
-            ed_input.setText("");
+            if(action == 1){
+                userQuery = "立即回報";
+                mchat.add(new Chat("sender", userQuery));
+            }else{
+                ed_input.setText("");
 
-            Log.d(TAG, "User Query: " + userQuery);
-            mchat.add(new Chat("sender", userQuery));
+                Log.d(TAG, "User Query: " + userQuery);
+                mchat.add(new Chat("sender", userQuery));
+            }
+//            startActivityForResult(intent, CUSTOM_POST_REQUEST);
+
 
             messageAdapter = new MessageAdapter(ChatRoomActivity.this, mchat);
 
