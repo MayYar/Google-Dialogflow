@@ -3,7 +3,7 @@
 ## Introduction
 This project is based on Google Dialogflow to create an Artificial Intelligence Helper in Android App. That is, it is not built on any platform recommended by Dialogflow.
 
-# Requirement
+## Requirement
 * Google Dialogflow
 * Android Studio
 
@@ -14,6 +14,10 @@ This project is based on Google Dialogflow to create an Artificial Intelligence 
     - Input: User
     - Output: Bot 
 4. Use your own data to have different application
+
+#### Problem Solving
+Q: Text response can not add hyperlink A: Use <u>Linkify</u> and remember to add <u>android:autoLink</u> in layout attribute (or html tag)
+Q: How to customize picture reponse? A: Use SpannableStringBuilder to add Imagespan into Textview
 
 ## Contact
 Feel free to [contact me](jyunyan.lu@gmail.com) if there's any problem.
