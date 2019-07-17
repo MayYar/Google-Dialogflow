@@ -8,6 +8,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -38,7 +39,7 @@ public class ChatRoomActivity extends AppCompatActivity {
     ImageButton btn_input;
     EditText ed_input;
     TextView response;
-    Button report, question;
+    Button report, question, hope;
 
     MessageAdapter messageAdapter;
     ArrayList<Chat> mchat = new ArrayList<>();
@@ -58,6 +59,7 @@ public class ChatRoomActivity extends AppCompatActivity {
         response = (TextView) findViewById(R.id.tv_response);
         report = (Button)findViewById(R.id.report);
         question = (Button)findViewById(R.id.question);
+        hope = (Button)findViewById(R.id.hope);
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
@@ -70,6 +72,7 @@ public class ChatRoomActivity extends AppCompatActivity {
 
         btn_input.setOnClickListener(doClick);
         report.setOnClickListener(doClick);
+        hope.setOnClickListener(doClick);
     }
 
     private Button.OnClickListener doClick = new Button.OnClickListener() {
@@ -83,6 +86,10 @@ public class ChatRoomActivity extends AppCompatActivity {
                     sendMessage();
                     break;
                 case R.id.report:
+                    action = 1;
+                    sendMessage();
+                    break;
+                case R.id.hope:
                     action = 1;
                     sendMessage();
                     break;
@@ -124,24 +131,6 @@ public class ChatRoomActivity extends AppCompatActivity {
         }
     }
 
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-//        switch (requestCode){
-//            case CUSTOM_POST_REQUEST:
-//                if (requestCode == CUSTOM_POST_REQUEST && null != data){
-//
-//                    String userQuery = ed_input.getText().toString();
-//                    ed_input.setText(userQuery);
-//                    Log.d(TAG, "User Query: " + userQuery);
-//                    RetrieveFeedTask task=new RetrieveFeedTask();
-//                    task.execute(userQuery);
-//                }
-//                break;
-//        }
-//    }
 
     // function connect with API.api and get json response
     public String GetResponse(String query) throws UnsupportedEncodingException{
@@ -229,6 +218,8 @@ public class ChatRoomActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             response.setText(s);
+            if (action == 1)
+                Linkify.addLinks(response, Linkify.EMAIL_ADDRESSES);
             mchat.add(new Chat("receiver", s));
             messageAdapter = new MessageAdapter(ChatRoomActivity.this, mchat);
             recyclerView.setAdapter(messageAdapter);
