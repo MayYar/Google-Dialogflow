@@ -1,6 +1,9 @@
 package com.example.ChatwithDialogflow.Adapter;
 
 import android.content.Context;
+import android.text.SpannableStringBuilder;
+import android.text.style.ImageSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +17,10 @@ import com.example.ChatwithDialogflow.R;
 
 import java.util.ArrayList;
 
+
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHolder> {
+
+    private static final String TAG = "MessageAdapter";
 
 //    public static int MSG_TYPE_RIGHT = 0;
 //    public static final int MSG_TYPE_RIGHT = 1;
@@ -47,7 +53,23 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         Chat chat = mChat.get(position);
-        holder.show_message.setText(chat.getMessage());
+        Log.d(TAG, "(" +position + ") " + chat.getMessage());
+        if(chat.getMessage().equals("有什麼想要建議我們的嗎~快來說下你的願望吧！") ){
+            Log.d(TAG, "進！！！！！ ");
+
+            SpannableStringBuilder builder = new SpannableStringBuilder();
+            builder.append(chat.getMessage())
+                    .append("\n")
+                    .append(" ", new ImageSpan(mContext, R.drawable.fountain), 0)
+                    .append("\n")
+                    .append("-------");
+
+            holder.show_message.setText(builder);
+        }else{
+            holder.show_message.setText(chat.getMessage());
+
+
+        }
     }
 
     @Override

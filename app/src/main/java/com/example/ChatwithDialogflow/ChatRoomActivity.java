@@ -8,6 +8,8 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.SpannableStringBuilder;
+import android.text.style.ImageSpan;
 import android.text.util.Linkify;
 import android.util.Log;
 import android.view.View;
@@ -43,7 +45,7 @@ public class ChatRoomActivity extends AppCompatActivity {
 
     MessageAdapter messageAdapter;
     ArrayList<Chat> mchat = new ArrayList<>();
-    int action = 0;
+    public static int action = 0;
 
     RecyclerView recyclerView;
     Intent intent;
@@ -90,7 +92,7 @@ public class ChatRoomActivity extends AppCompatActivity {
                     sendMessage();
                     break;
                 case R.id.hope:
-                    action = 1;
+                    action = 2;
                     sendMessage();
                     break;
 
@@ -108,17 +110,16 @@ public class ChatRoomActivity extends AppCompatActivity {
             if(action == 1){
                 userQuery = "立即回報";
                 mchat.add(new Chat("sender", userQuery));
+            }else if(action == 2) {
+                userQuery = "許願池";
+                mchat.add(new Chat("sender", userQuery));
             }else{
                 ed_input.setText("");
-
-                Log.d(TAG, "User Query: " + userQuery);
                 mchat.add(new Chat("sender", userQuery));
             }
-//            startActivityForResult(intent, CUSTOM_POST_REQUEST);
-
+            Log.d(TAG, "User Query: " + userQuery);
 
             messageAdapter = new MessageAdapter(ChatRoomActivity.this, mchat);
-
             recyclerView.setAdapter(messageAdapter);
 
             //task running
@@ -217,9 +218,9 @@ public class ChatRoomActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            response.setText(s);
-            if (action == 1)
-                Linkify.addLinks(response, Linkify.EMAIL_ADDRESSES);
+//            response.setText(s);
+            Linkify.addLinks(response, Linkify.EMAIL_ADDRESSES);
+
             mchat.add(new Chat("receiver", s));
             messageAdapter = new MessageAdapter(ChatRoomActivity.this, mchat);
             recyclerView.setAdapter(messageAdapter);
