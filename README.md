@@ -17,9 +17,9 @@ This project is based on Google Dialogflow to create an Artificial Intelligence 
 
 #### Problem Solving
 * Q: Text response can not add hyperlink 
-** A: Use **Linkify** and remember to add **android:autoLink** in layout attribute (or html tag)
+    * A: Use **Linkify** and remember to add **android:autoLink** in layout attribute (or html tag)
 * Q: How to customize picture reponse? 
-** A: Use SpannableStringBuilder to add Imagespan into Textview
+    * A: Use SpannableStringBuilder to add Imagespan into Textview
 
 ## Contact
 Feel free to [contact me](jyunyan.lu@gmail.com) if there's any problem.
