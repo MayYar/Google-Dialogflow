@@ -12,43 +12,75 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/recycler_view"
-        android:layout_above="@+id/report"/>
+        android:layout_above="@+id/scrollView">
+
+    </androidx.recyclerview.widget.RecyclerView>
 
 
-    <Button
-        android:id="@+id/report"
-        android:layout_width="wrap_content"
+    <HorizontalScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/bottom"
-        android:layout_marginLeft="5dp"
-        android:layout_marginBottom="5dp"
-        android:background="@drawable/hot_item"
-        android:text="立即回報"
-        android:textSize="14dp" />
+        >
 
-    <Button
-        android:id="@+id/question"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/bottom"
-        android:layout_toRightOf="@+id/report"
-        android:layout_marginLeft="5dp"
-        android:layout_marginBottom="5dp"
-        android:background="@drawable/hot_item"
-        android:text="常見問題"
-        android:textSize="14dp" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/report"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/hot_item"
+                android:text="立即回報"
+                android:textSize="14dp"
+                android:minHeight="30dp"/>
 
-    <Button
-        android:id="@+id/hope"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/bottom"
-        android:layout_toRightOf="@+id/question"
-        android:layout_marginLeft="5dp"
-        android:layout_marginBottom="5dp"
-        android:background="@drawable/hot_item"
-        android:text="許願池"
-        android:textSize="14dp" />
+            <Button
+                android:id="@+id/question"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/report"
+                android:layout_marginLeft="5dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/hot_item"
+                android:text="常見問題"
+                android:textSize="14dp"
+                android:minHeight="30dp"/>
+
+            <Button
+                android:id="@+id/hope"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/question"
+                android:layout_marginLeft="5dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/hot_item"
+                android:text="許願池"
+                android:textSize="14dp"
+                android:minHeight="30dp"/>
+
+
+            <Button
+                android:id="@+id/not_only_bus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/hope"
+                android:layout_marginLeft="5dp"
+                android:layout_marginBottom="5dp"
+                android:padding="5dp"
+                android:background="@drawable/hot_item"
+                android:text="不。只。是。等。公。車"
+                android:textSize="14dp"
+                android:minHeight="30dp"/>
+
+        </RelativeLayout>>
+    </HorizontalScrollView>
+
+
 
         <RelativeLayout
             android:id="@+id/bottom"

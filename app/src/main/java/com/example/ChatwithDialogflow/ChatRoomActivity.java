@@ -40,8 +40,8 @@ public class ChatRoomActivity extends AppCompatActivity {
 
     ImageButton btn_input;
     EditText ed_input;
-    TextView response;
-    Button report, question, hope;
+//    TextView response;
+    Button report, question, hope, notonlybus;
 
     MessageAdapter messageAdapter;
     ArrayList<Chat> mchat = new ArrayList<>();
@@ -58,10 +58,11 @@ public class ChatRoomActivity extends AppCompatActivity {
         //define view
         btn_input = (ImageButton)findViewById(R.id.btn_input);
         ed_input = (EditText) findViewById(R.id.ed_input);
-        response = (TextView) findViewById(R.id.tv_response);
+//        response = (TextView) findViewById(R.id.tv_response);
         report = (Button)findViewById(R.id.report);
         question = (Button)findViewById(R.id.question);
         hope = (Button)findViewById(R.id.hope);
+        notonlybus = (Button)findViewById(R.id.not_only_bus);
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
@@ -75,6 +76,7 @@ public class ChatRoomActivity extends AppCompatActivity {
         btn_input.setOnClickListener(doClick);
         report.setOnClickListener(doClick);
         hope.setOnClickListener(doClick);
+        notonlybus.setOnClickListener(doClick);
     }
 
     private Button.OnClickListener doClick = new Button.OnClickListener() {
@@ -95,6 +97,10 @@ public class ChatRoomActivity extends AppCompatActivity {
                     action = 2;
                     sendMessage();
                     break;
+                case R.id.not_only_bus:
+                    action = 3;
+                    sendMessage();
+                    break;
 
             }
 
@@ -112,6 +118,9 @@ public class ChatRoomActivity extends AppCompatActivity {
                 mchat.add(new Chat("sender", userQuery));
             }else if(action == 2) {
                 userQuery = "許願池";
+                mchat.add(new Chat("sender", userQuery));
+            }else if(action == 3) {
+                userQuery = "不。只。是。等。公。車";
                 mchat.add(new Chat("sender", userQuery));
             }else{
                 ed_input.setText("");
@@ -219,7 +228,7 @@ public class ChatRoomActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
 //            response.setText(s);
-            Linkify.addLinks(response, Linkify.EMAIL_ADDRESSES);
+//            Linkify.addLinks(response, Linkify.EMAIL_ADDRESSES);
 
             mchat.add(new Chat("receiver", s));
             messageAdapter = new MessageAdapter(ChatRoomActivity.this, mchat);

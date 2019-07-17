@@ -22,6 +22,6 @@
         android:textSize="18sp"
         android:padding="8dp"
         android:background="@drawable/background_left"
-        android:autoLink="email"/>
+        android:autoLink="all"/>
 
 </RelativeLayout>

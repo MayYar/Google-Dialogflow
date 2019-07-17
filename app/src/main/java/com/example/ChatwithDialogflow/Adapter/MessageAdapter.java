@@ -3,6 +3,7 @@ package com.example.ChatwithDialogflow.Adapter;
 import android.content.Context;
 import android.text.SpannableStringBuilder;
 import android.text.style.ImageSpan;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,7 +56,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         Chat chat = mChat.get(position);
         Log.d(TAG, "(" +position + ") " + chat.getMessage());
         if(chat.getMessage().equals("有什麼想要建議我們的嗎~快來說下你的願望吧！") ){
-            Log.d(TAG, "進！！！！！ ");
 
             SpannableStringBuilder builder = new SpannableStringBuilder();
             builder.append(chat.getMessage())
@@ -65,11 +65,19 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
                     .append("-------");
 
             holder.show_message.setText(builder);
-        }else{
+            Linkify.addLinks(holder.show_message, Linkify.EMAIL_ADDRESSES);
+        }else if (chat.getMessage().contains("來逛逛最新資訊吧！") ){
+            SpannableStringBuilder builder = new SpannableStringBuilder();
+            builder.append(chat.getMessage())
+                    .append("\n")
+                    .append(" ", new ImageSpan(mContext, R.drawable.notonlybus), 0)
+                    .append("\n");
+
+            holder.show_message.setText(builder);
+            Linkify.addLinks(holder.show_message, Linkify.WEB_URLS);
+
+        }else
             holder.show_message.setText(chat.getMessage());
-
-
-        }
     }
 
     @Override
