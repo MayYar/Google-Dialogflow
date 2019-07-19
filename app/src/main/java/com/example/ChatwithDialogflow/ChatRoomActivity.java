@@ -77,6 +77,7 @@ public class ChatRoomActivity extends AppCompatActivity {
         report.setOnClickListener(doClick);
         hope.setOnClickListener(doClick);
         notonlybus.setOnClickListener(doClick);
+        question.setOnClickListener(doClick);
     }
 
     private Button.OnClickListener doClick = new Button.OnClickListener() {
@@ -101,7 +102,10 @@ public class ChatRoomActivity extends AppCompatActivity {
                     action = 3;
                     sendMessage();
                     break;
-
+                case R.id.question:
+                    action = 4;
+                    sendMessage();
+                    break;
             }
 
         }
@@ -121,6 +125,9 @@ public class ChatRoomActivity extends AppCompatActivity {
                 mchat.add(new Chat("sender", userQuery));
             }else if(action == 3) {
                 userQuery = "不。只。是。等。公。車";
+                mchat.add(new Chat("sender", userQuery));
+            }else if(action == 4) {
+                userQuery = "常見問題";
                 mchat.add(new Chat("sender", userQuery));
             }else{
                 ed_input.setText("");

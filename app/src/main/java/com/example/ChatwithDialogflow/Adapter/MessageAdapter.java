@@ -1,6 +1,8 @@
 package com.example.ChatwithDialogflow.Adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.text.SpannableStringBuilder;
 import android.text.style.ImageSpan;
 import android.text.util.Linkify;
@@ -8,6 +10,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -62,14 +66,25 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
                     .append("\n")
                     .append(" ", new ImageSpan(mContext, R.drawable.fountain), 0)
                     .append("\n")
-                    .append("-------");
+                    .append("----點我填願望吧----");
 
             holder.show_message.setText(builder);
             Linkify.addLinks(holder.show_message, Linkify.EMAIL_ADDRESSES);
+            holder.show_message.setOnClickListener(doClick);
         }else if (chat.getMessage().contains("來逛逛最新資訊吧！") ){
             SpannableStringBuilder builder = new SpannableStringBuilder();
             builder.append(chat.getMessage())
                     .append("\n")
+                    .append(" ", new ImageSpan(mContext, R.drawable.notonlybus), 0)
+                    .append("\n");
+
+            holder.show_message.setText(builder);
+            Linkify.addLinks(holder.show_message, Linkify.WEB_URLS);
+
+        }else if (chat.getMessage().contains("以下為常見問題") ){
+            SpannableStringBuilder builder = new SpannableStringBuilder();
+            builder.append(chat.getMessage())
+                    .append("測試" ,new TextView(mContext), 0)
                     .append(" ", new ImageSpan(mContext, R.drawable.notonlybus), 0)
                     .append("\n");
 
@@ -104,4 +119,33 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         else
             return 1;
     }
+
+    private TextView.OnClickListener doClick = new TextView.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+
+            final EditText input = new EditText(mContext);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT);
+            input.setLayoutParams(lp);
+            builder.setTitle("許願池")
+                    .setMessage("說出你的願望")
+                    .setView(input)
+                    .setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    })
+                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    })
+                    .show();
+        }
+    };
 }
