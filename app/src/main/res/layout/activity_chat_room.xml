@@ -22,31 +22,37 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/bottom"
+        android:background="@android:color/white"
+        android:scrollbarThumbHorizontal="@android:color/transparent"
         >
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <Button
                 android:id="@+id/report"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
                 android:layout_marginBottom="5dp"
-                android:background="@drawable/hot_item"
+                android:background="@drawable/textview_border"
+                android:minHeight="30dp"
                 android:text="立即回報"
-                android:textSize="14dp"
-                android:minHeight="30dp"/>
+                android:textColor="#858383"
+                android:textSize="14dp" />
 
             <Button
                 android:id="@+id/question"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/report"
-                android:layout_marginLeft="5dp"
-                android:layout_marginBottom="5dp"
-                android:background="@drawable/hot_item"
+                android:layout_margin="5dp"
+                android:background="@drawable/textview_border"
+                android:textColor="#858383"
                 android:text="常見問題"
                 android:textSize="14dp"
                 android:minHeight="30dp"/>
@@ -56,9 +62,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/question"
-                android:layout_marginLeft="5dp"
-                android:layout_marginBottom="5dp"
-                android:background="@drawable/hot_item"
+                android:layout_margin="5dp"
+                android:background="@drawable/textview_border"
+                android:textColor="#858383"
+
                 android:text="許願池"
                 android:textSize="14dp"
                 android:minHeight="30dp"/>
@@ -69,15 +76,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/hope"
-                android:layout_marginLeft="5dp"
-                android:layout_marginBottom="5dp"
+                android:layout_margin="5dp"
                 android:padding="5dp"
-                android:background="@drawable/hot_item"
+                android:background="@drawable/textview_border"
+                android:textColor="#858383"
+
                 android:text="不。只。是。等。公。車"
                 android:textSize="14dp"
                 android:minHeight="30dp"/>
 
-        </RelativeLayout>>
+        </RelativeLayout>
     </HorizontalScrollView>
 
 
@@ -91,24 +99,37 @@
             android:layout_alignParentBottom="true">
 
 
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                app:srcCompat="@drawable/smile"
+                android:layout_centerVertical="true"
+                />
 
             <EditText
                 android:id="@+id/ed_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Type a message..."
-                android:background="@android:color/transparent"
+                android:layout_centerVertical="true"
                 android:layout_toLeftOf="@id/btn_input"
-                android:layout_centerVertical="true"/>
+                android:layout_toRightOf="@+id/imageView"
+                android:background="@drawable/edittext_border"
+                android:hint="Type a message..."
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:padding="5dp"/>
 
             <ImageButton
                 android:id="@+id/btn_input"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:background="@drawable/ic_action_name"
                 android:text="Button"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"/>
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                />
 
 
         </RelativeLayout>
@@ -118,10 +139,10 @@
 
 
 
-    <TextView
-        android:id="@+id/tv_response"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="N/A" />
+    <!--<TextView-->
+        <!--android:id="@+id/tv_response"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="N/A" />-->
 
 </RelativeLayout>

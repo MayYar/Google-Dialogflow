@@ -49,7 +49,6 @@ public class ChatRoomActivity extends AppCompatActivity {
 
     private static final String TAG = "ChatRoomActivity";
     static final int CUSTOM_POST_REQUEST = 1;  // The request code
-    private final String CLOUD_API_KEY = "AIzaSyDexGEae6RiUnIWN_krPgxBV7kjL4pSZ7g";
 
     static float sentimentScore = 0;
 
@@ -241,7 +240,7 @@ public class ChatRoomActivity extends AppCompatActivity {
 
 //        需要HTTP傳輸和JSON工廠這兩個參數, 通過分配CloudNaturalLanguageRequestInitializer實例給它，可以強制它將API金鑰添加到所有請求中
         final CloudNaturalLanguage naturalLanguageService = new CloudNaturalLanguage.Builder(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), null)
-                .setCloudNaturalLanguageRequestInitializer(new CloudNaturalLanguageRequestInitializer(CLOUD_API_KEY)).build();
+                .setCloudNaturalLanguageRequestInitializer(new CloudNaturalLanguageRequestInitializer(Constants.CLOUD_API_KEY)).build();
 
 //        要使用API​​分析的所有文本必須放在Document物件內
         String transcript = userQuery;
@@ -359,9 +358,17 @@ public class ChatRoomActivity extends AppCompatActivity {
                 messageAdapter = new MessageAdapter(ChatRoomActivity.this, mchat);
                 recyclerView.setAdapter(messageAdapter);
             }else{
-                mchat.add(new Chat("receiver", s));
-                messageAdapter = new MessageAdapter(ChatRoomActivity.this, mchat);
-                recyclerView.setAdapter(messageAdapter);
+//                if(userQuery == "常見問題"){
+//                    mchat.add(new Chat("receiver", s));
+//                    mchat.add(new Chat("receiver", s+"_reply"));
+//
+//                    messageAdapter = new MessageAdapter(ChatRoomActivity.this, mchat);
+//                    recyclerView.setAdapter(messageAdapter);
+//                }else {
+                    mchat.add(new Chat("receiver", s));
+                    messageAdapter = new MessageAdapter(ChatRoomActivity.this, mchat);
+                    recyclerView.setAdapter(messageAdapter);
+//                }
             }
 
 

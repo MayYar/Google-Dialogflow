@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.text.SpannableStringBuilder;
+import android.text.style.EasyEditSpan;
 import android.text.style.ImageSpan;
 import android.text.util.Linkify;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -59,7 +61,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
         Chat chat = mChat.get(position);
         Log.d(TAG, "(" +position + ") " + chat.getMessage());
-        if(chat.getMessage().equals("有什麼想要建議我們的嗎~快來說下你的願望吧！") ){
+        if(chat.getMessage().equals("有什麼想要建議我們的嗎~快來說下你的願望吧！") ){    //許願池
 
             SpannableStringBuilder builder = new SpannableStringBuilder();
             builder.append(chat.getMessage())
@@ -69,9 +71,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
                     .append("----點我填願望吧----");
 
             holder.show_message.setText(builder);
-            Linkify.addLinks(holder.show_message, Linkify.EMAIL_ADDRESSES);
+//            Linkify.addLinks(holder.show_message, Linkify.EMAIL_ADDRESSES);
             holder.show_message.setOnClickListener(doClick);
-        }else if (chat.getMessage().contains("來逛逛最新資訊吧！") ){
+        }else if (chat.getMessage().contains("來逛逛最新資訊吧！") ) {    //Forum
             SpannableStringBuilder builder = new SpannableStringBuilder();
             builder.append(chat.getMessage())
                     .append("\n")
@@ -81,15 +83,18 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             holder.show_message.setText(builder);
             Linkify.addLinks(holder.show_message, Linkify.WEB_URLS);
 
-        }else if (chat.getMessage().contains("以下為常見問題") ){
-            SpannableStringBuilder builder = new SpannableStringBuilder();
-            builder.append(chat.getMessage())
-                    .append("測試" ,new TextView(mContext), 0)
-                    .append(" ", new ImageSpan(mContext, R.drawable.notonlybus), 0)
-                    .append("\n");
 
-            holder.show_message.setText(builder);
-            Linkify.addLinks(holder.show_message, Linkify.WEB_URLS);
+
+//        }else if (chat.getMessage().contains("常見問題") ){  //
+//            SpannableStringBuilder builder = new SpannableStringBuilder();
+//            builder.append(chat.getMessage())
+//                    .append("測試" ,new TextView(mContext), 0)
+//                    .append(" ", new ImageSpan(mContext, R.drawable.notonlybus), 0)
+//                    .append("\n");
+//
+//            holder.show_message.setText(builder);
+//            Linkify.addLinks(holder.show_message, Linkify.WEB_URLS);
+
 
         }else
             holder.show_message.setText(chat.getMessage());
@@ -104,10 +109,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView show_message;
+        public RelativeLayout question_list;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             show_message = itemView.findViewById(R.id.show_message);
+            question_list = itemView.findViewById(R.id.question_list);
         }
     }
 

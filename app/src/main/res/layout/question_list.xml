@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/question_list"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:padding="8dp"
+    android:layout_height="wrap_content">
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="45dp"
+        android:orientation="vertical"
+        android:background="@android:color/white">
+
+        <TextView
+            android:id="@+id/test1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="路線規劃可變回中文站名嗎"
+            android:layout_toRightOf="@+id/bus_image"
+            android:textSize="18sp"
+            android:padding="8dp"
+            android:background="@drawable/background_left"
+            android:autoLink="all"/>
+
+        <TextView
+            android:id="@+id/test2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="不能離線操作嗎？"
+            android:layout_toRightOf="@+id/bus_image"
+            android:textSize="18sp"
+            android:padding="8dp"
+            android:background="@drawable/background_left"
+            android:autoLink="all"/>
+
+        <TextView
+            android:id="@+id/test3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="可不可以多個機車導航"
+            android:layout_toRightOf="@+id/bus_image"
+            android:textSize="18sp"
+            android:padding="8dp"
+            android:background="@drawable/background_left"
+            android:autoLink="all"/>
+    </LinearLayout>
+
+
+
+</RelativeLayout>
