@@ -21,27 +21,46 @@ import android.widget.Toast;
 
 import com.example.ChatwithDialogflow.Adapter.MessageAdapter;
 import com.example.ChatwithDialogflow.Model.Chat;
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.extensions.android.json.AndroidJsonFactory;
+import com.google.api.services.language.v1beta2.CloudNaturalLanguage;
+import com.google.api.services.language.v1beta2.CloudNaturalLanguageRequestInitializer;
+import com.google.api.services.language.v1beta2.model.AnnotateTextRequest;
+import com.google.api.services.language.v1beta2.model.AnnotateTextResponse;
+import com.google.api.services.language.v1beta2.model.Document;
+import com.google.api.services.language.v1beta2.model.Entity;
+import com.google.api.services.language.v1beta2.model.Features;
+import com.google.api.services.language.v1beta2.model.Token;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ChatRoomActivity extends AppCompatActivity {
 
     private static final String TAG = "ChatRoomActivity";
     static final int CUSTOM_POST_REQUEST = 1;  // The request code
+    private final String CLOUD_API_KEY = "AIzaSyDexGEae6RiUnIWN_krPgxBV7kjL4pSZ7g";
+
+    static float sentimentScore = 0;
+
 
     ImageButton btn_input;
     EditText ed_input;
 //    TextView response;
     Button report, question, hope, notonlybus;
+
+    String userQuery;
+
 
     MessageAdapter messageAdapter;
     ArrayList<Chat> mchat = new ArrayList<>();
@@ -114,7 +133,7 @@ public class ChatRoomActivity extends AppCompatActivity {
     private void sendMessage() {
 //        Intent intent = new Intent();
 //        intent.putExtra("test", CUSTOM_POST_REQUEST);
-        String userQuery = ed_input.getText().toString();
+        userQuery = ed_input.getText().toString();
 
         try {
             if(action == 1){
@@ -130,7 +149,6 @@ public class ChatRoomActivity extends AppCompatActivity {
                 userQuery = "常見問題";
                 mchat.add(new Chat("sender", userQuery));
             }else{
-                ed_input.setText("");
                 mchat.add(new Chat("sender", userQuery));
             }
             Log.d(TAG, "User Query: " + userQuery);
@@ -142,6 +160,8 @@ public class ChatRoomActivity extends AppCompatActivity {
             RetrieveFeedTask task=new RetrieveFeedTask();
             task.execute(userQuery);
             Log.d(TAG, "AsyncTask invoked");
+            ed_input.setText("");
+
 
         }catch (ActivityNotFoundException e){
             Toast.makeText(this, "POST Request error", Toast.LENGTH_SHORT).show();
@@ -215,6 +235,96 @@ public class ChatRoomActivity extends AppCompatActivity {
         return null;
     }
 
+
+
+    private String NLPprocessing(){
+
+//        需要HTTP傳輸和JSON工廠這兩個參數, 通過分配CloudNaturalLanguageRequestInitializer實例給它，可以強制它將API金鑰添加到所有請求中
+        final CloudNaturalLanguage naturalLanguageService = new CloudNaturalLanguage.Builder(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), null)
+                .setCloudNaturalLanguageRequestInitializer(new CloudNaturalLanguageRequestInitializer(CLOUD_API_KEY)).build();
+
+//        要使用API​​分析的所有文本必須放在Document物件內
+        String transcript = userQuery;
+        Document document = new Document();
+        document.setType("PLAIN_TEXT");
+        document.setLanguage("zh-Hant");
+        document.setContent(transcript);
+
+        Features features = new Features();
+        features.setExtractEntities(true);  //提取實體
+        features.setExtractDocumentSentiment(true); //情緒分析
+        features.setExtractSyntax(true);
+//        features.setExtractEntitySentiment(true);
+
+        final AnnotateTextRequest request = new AnnotateTextRequest();
+        request.setDocument(document);
+        request.setFeatures(features);
+
+        AnnotateTextResponse response = null;
+        try {
+            response = naturalLanguageService.documents().annotateText(request).execute();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        final List<Entity> entityList = response.getEntities();
+        final float sentiment = response.getDocumentSentiment().getScore();
+        sentimentScore = response.getDocumentSentiment().getScore();
+        final List<Token> tokenList = response.getTokens();
+
+
+
+        return String.valueOf(sentimentScore);
+
+//        AsyncTask.execute(new Runnable() {
+//            @Override
+//            public void run() {
+//                //Instantiates a client
+//
+//                AnnotateTextResponse response = null;
+//                try {
+//                    response = naturalLanguageService.documents().annotateText(request).execute();
+//
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//
+//                final List<Entity> entityList = response.getEntities();
+//                final float sentiment = response.getDocumentSentiment().getScore();
+//                sentimentScore = response.getDocumentSentiment().getScore();
+////                final List<Sentence> sentenceList = response.getSentences();
+//                final List<Token> tokenList = response.getTokens();
+
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        String entities = "";
+//                        for (Entity entity : entityList) {
+//                            entities += "\n" + entity.getName().toUpperCase();
+//                        }
+//
+//                        String tokens = "";
+//                        for (Token token: tokenList) {
+//                            tokens += "\n" + token.getLemma();
+//                        }
+//
+//                        AlertDialog dialog = new AlertDialog.Builder(ChatRoomActivity.this)
+//                                .setTitle("Sentiment: " + sentiment)
+//                                .setMessage("This message talks about: " + entities + " tokens = " + tokens)
+//                                .setNeutralButton("OK", null)
+//                                .create();
+//                        dialog.show();
+//                    }
+//                });
+
+//            }
+//        });
+
+    }
+
+
+
     // Asynctask to run POST Request
     class RetrieveFeedTask extends AsyncTask<String, Void, String>{
 
@@ -224,6 +334,7 @@ public class ChatRoomActivity extends AppCompatActivity {
             try{
                 Log.d(TAG, "doInBackground. Param: " + voids[0]);
                 s = GetResponse(voids[0]);
+                sentimentScore = Float.valueOf(NLPprocessing());
 
             }catch (UnsupportedEncodingException e){
                 e.printStackTrace();
@@ -236,11 +347,27 @@ public class ChatRoomActivity extends AppCompatActivity {
             super.onPostExecute(s);
 //            response.setText(s);
 //            Linkify.addLinks(response, Linkify.EMAIL_ADDRESSES);
+            System.out.println("sentimentScore: " + sentimentScore);
+            if(sentimentScore > 0.5){
+//                System.out.println("好正面: " + s);
+                mchat.add(new Chat("receiver", Constants.POSITiVE_REPLY));
+                messageAdapter = new MessageAdapter(ChatRoomActivity.this, mchat);
+                recyclerView.setAdapter(messageAdapter);
+            }else if(sentimentScore < -0.5) {
+//                System.out.println("好負面: " + s);
+                mchat.add(new Chat("receiver", Constants.NEGATIVE_REPLY));
+                messageAdapter = new MessageAdapter(ChatRoomActivity.this, mchat);
+                recyclerView.setAdapter(messageAdapter);
+            }else{
+                mchat.add(new Chat("receiver", s));
+                messageAdapter = new MessageAdapter(ChatRoomActivity.this, mchat);
+                recyclerView.setAdapter(messageAdapter);
+            }
 
-            mchat.add(new Chat("receiver", s));
-            messageAdapter = new MessageAdapter(ChatRoomActivity.this, mchat);
-            recyclerView.setAdapter(messageAdapter);
+
         }
     }
+
+
 
 }
