@@ -358,17 +358,19 @@ public class ChatRoomActivity extends AppCompatActivity {
                 messageAdapter = new MessageAdapter(ChatRoomActivity.this, mchat);
                 recyclerView.setAdapter(messageAdapter);
             }else{
-//                if(userQuery == "常見問題"){
-//                    mchat.add(new Chat("receiver", s));
-//                    mchat.add(new Chat("receiver", s+"_reply"));
-//
-//                    messageAdapter = new MessageAdapter(ChatRoomActivity.this, mchat);
-//                    recyclerView.setAdapter(messageAdapter);
-//                }else {
+                if(userQuery == "常見問題") {
+                    mchat.add(new Chat("question_list", s));
+                    messageAdapter = new MessageAdapter(ChatRoomActivity.this, mchat);
+                    recyclerView.setAdapter(messageAdapter);
+                }else if(userQuery == "許願池") {
+                    mchat.add(new Chat("hope_well", s));
+                    messageAdapter = new MessageAdapter(ChatRoomActivity.this, mchat);
+                    recyclerView.setAdapter(messageAdapter);
+                }else {
                     mchat.add(new Chat("receiver", s));
                     messageAdapter = new MessageAdapter(ChatRoomActivity.this, mchat);
                     recyclerView.setAdapter(messageAdapter);
-//                }
+                }
             }
 
 

@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -45,8 +46,14 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if(viewType == 0){
+        if(viewType == 0) {
             View view = LayoutInflater.from(mContext).inflate(R.layout.chat_item_right, parent, false);
+            return new MessageAdapter.ViewHolder(view);
+        }else if (viewType == 2){
+            View view = LayoutInflater.from(mContext).inflate(R.layout.question_list, parent, false);
+            return new MessageAdapter.ViewHolder(view);
+        }else if (viewType == 3){
+            View view = LayoutInflater.from(mContext).inflate(R.layout.hope_well, parent, false);
             return new MessageAdapter.ViewHolder(view);
         }else{
             View view = LayoutInflater.from(mContext).inflate(R.layout.chat_item_left, parent, false);
@@ -63,12 +70,14 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         Log.d(TAG, "(" +position + ") " + chat.getMessage());
         if(chat.getMessage().equals("有什麼想要建議我們的嗎~快來說下你的願望吧！") ){    //許願池
 
+            holder.hope_message.setVisibility(View.VISIBLE);
+            holder.btn_ok.setVisibility(View.VISIBLE);
+
+
             SpannableStringBuilder builder = new SpannableStringBuilder();
             builder.append(chat.getMessage())
                     .append("\n")
-                    .append(" ", new ImageSpan(mContext, R.drawable.fountain), 0)
-                    .append("\n")
-                    .append("----點我填願望吧----");
+                    .append(" ", new ImageSpan(mContext, R.drawable.fountain), 0);
 
             holder.show_message.setText(builder);
 //            Linkify.addLinks(holder.show_message, Linkify.EMAIL_ADDRESSES);
@@ -85,7 +94,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
 
 
-//        }else if (chat.getMessage().contains("常見問題") ){  //
+        }else if (chat.getMessage().contains("近期常見問題") ){  //
 //            SpannableStringBuilder builder = new SpannableStringBuilder();
 //            builder.append(chat.getMessage())
 //                    .append("測試" ,new TextView(mContext), 0)
@@ -109,12 +118,14 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView show_message;
-        public RelativeLayout question_list;
+        public EditText hope_message;
+        public Button btn_ok;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             show_message = itemView.findViewById(R.id.show_message);
-            question_list = itemView.findViewById(R.id.question_list);
+            hope_message = itemView.findViewById(R.id.hope_message);
+            btn_ok = itemView.findViewById(R.id.btn_ok);
         }
     }
 
@@ -123,6 +134,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     public int getItemViewType(int position) {
         if(mChat.get(position).getType() == "sender")
             return 0;
+        else if (mChat.get(position).getType() == "question_list")
+            return 2;
+        else if (mChat.get(position).getType() == "hope_well")
+            return 3;
         else
             return 1;
     }
