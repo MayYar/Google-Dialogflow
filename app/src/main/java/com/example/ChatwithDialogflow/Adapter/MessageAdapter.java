@@ -3,6 +3,7 @@ package com.example.ChatwithDialogflow.Adapter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.media.Image;
 import android.text.SpannableStringBuilder;
 import android.text.style.EasyEditSpan;
 import android.text.style.ImageSpan;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -55,6 +57,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         }else if (viewType == 3){
             View view = LayoutInflater.from(mContext).inflate(R.layout.hope_well, parent, false);
             return new MessageAdapter.ViewHolder(view);
+        }else if (viewType == 4){
+            View view = LayoutInflater.from(mContext).inflate(R.layout.word_cloud, parent, false);
+            return new MessageAdapter.ViewHolder(view);
         }else{
             View view = LayoutInflater.from(mContext).inflate(R.layout.chat_item_left, parent, false);
             return new MessageAdapter.ViewHolder(view);
@@ -70,8 +75,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         Log.d(TAG, "(" +position + ") " + chat.getMessage());
         if(chat.getMessage().equals("有什麼想要建議我們的嗎~快來說下你的願望吧！") ){    //許願池
 
-            holder.hope_message.setVisibility(View.VISIBLE);
-            holder.btn_ok.setVisibility(View.VISIBLE);
+//            holder.hope_message.setVisibility(View.VISIBLE);
+//            holder.btn_ok.setVisibility(View.VISIBLE);
 
 
             SpannableStringBuilder builder = new SpannableStringBuilder();
@@ -103,7 +108,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 //
 //            holder.show_message.setText(builder);
 //            Linkify.addLinks(holder.show_message, Linkify.WEB_URLS);
-
+        }else if (chat.getMessage().contains("reply文字雲") ){
+//            holder.word_cloud.setImageResource(R.drawable.bus);
+             holder.word_cloud.setImageResource(R.mipmap.ic_launcher);
 
         }else
             holder.show_message.setText(chat.getMessage());
@@ -120,12 +127,14 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         public TextView show_message;
         public EditText hope_message;
         public Button btn_ok;
+        public ImageView word_cloud;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             show_message = itemView.findViewById(R.id.show_message);
             hope_message = itemView.findViewById(R.id.hope_message);
             btn_ok = itemView.findViewById(R.id.btn_ok);
+            word_cloud = itemView.findViewById(R.id.show_pic);
         }
     }
 
@@ -138,6 +147,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             return 2;
         else if (mChat.get(position).getType() == "hope_well")
             return 3;
+        else if (mChat.get(position).getType() == "word_cloud")
+            return 4;
         else
             return 1;
     }

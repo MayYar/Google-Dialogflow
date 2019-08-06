@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "974918110329",
+    "firebase_url": "https://bustrackerbot-vhffuj.firebaseio.com",
+    "project_id": "bustrackerbot-vhffuj",
+    "storage_bucket": "bustrackerbot-vhffuj.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:974918110329:android:d10d58ccc16deda5",
+        "android_client_info": {
+          "package_name": "com.example.ChatwithDialogflow"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "974918110329-m0d3v1mtm4d742c1ovtfm3pvvip57j9u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ChatwithDialogflow",
+            "certificate_hash": "df81ed18f815c06a61adec91925c58579829b28f"
+          }
+        },
+        {
+          "client_id": "974918110329-vg3cf19fkd5g1oidekq2gk0vt6sb8qm7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsaZUe_ohqXUqylhSp5ukTu9dY569OacE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "974918110329-s16cr7gtv7fj6ngij6cdvk72upgb0ojl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

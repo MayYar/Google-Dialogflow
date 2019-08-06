@@ -81,7 +81,21 @@
                 android:background="@drawable/textview_border"
                 android:textColor="#858383"
 
-                android:text="不。只。是。等。公。車"
+                android:text="公車論壇"
+                android:textSize="14dp"
+                android:minHeight="30dp"/>
+
+            <Button
+                android:id="@+id/word_cloud"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/not_only_bus"
+                android:layout_margin="5dp"
+                android:padding="5dp"
+                android:background="@drawable/textview_border"
+                android:textColor="#858383"
+
+                android:text="最近搞什麼"
                 android:textSize="14dp"
                 android:minHeight="30dp"/>
 
