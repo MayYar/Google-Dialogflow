@@ -11,13 +11,13 @@
         <!--android:layout_alignParentEnd="true"-->
         <!--android:layout_alignParentRight="true">-->
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:id="@+id/kin"
-            android:src="@drawable/kin"
-            android:layout_alignParentRight="true"
-            android:layout_centerHorizontal="true"/>
+        <!--<de.hdodenhof.circleimageview.CircleImageView-->
+            <!--android:layout_width="50dp"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:id="@+id/kin"-->
+            <!--android:src="@drawable/kin"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_centerHorizontal="true"/>-->
 
         <TextView
             android:id="@+id/show_message"
@@ -28,9 +28,8 @@
             android:textColor="#fff"
             android:textSize="18sp"
             android:layout_marginRight="5dp"
-            android:layout_toLeftOf="@+id/kin"
             android:background="@drawable/background_right"
-            android:layout_centerHorizontal="true"/>
+            android:layout_alignParentRight="true"/>
 
     <!--</RelativeLayout>-->
 

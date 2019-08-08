@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.media.Image;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
@@ -17,6 +19,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +39,9 @@ import com.google.api.services.language.v1beta2.model.Features;
 import com.google.api.services.language.v1beta2.model.Token;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 //import com.google.firebase.storage.FileDownloadTask;
 //import com.google.firebase.storage.FirebaseStorage;
 //import com.google.firebase.storage.StorageReference;
@@ -67,11 +73,13 @@ public class ChatRoomActivity extends AppCompatActivity {
 //    TextView response;
     Button report, question, hope, notonlybus, wordcloud;
 
+    ImageView iv_wordcloud;
+
     private DatabaseReference mDatabase;
     String userQuery;
     ArrayList<String> entities = new ArrayList<>();
 
-//    private StorageReference mStorageRef;
+    private StorageReference mStorageRef;
     MessageAdapter messageAdapter;
     ArrayList<Chat> mchat = new ArrayList<>();
     public static int action = 0;
@@ -85,7 +93,7 @@ public class ChatRoomActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat_room);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
-//        mStorageRef = FirebaseStorage.getInstance().getReference();
+        mStorageRef = FirebaseStorage.getInstance().getReference();
 
 
         //define view
@@ -97,6 +105,7 @@ public class ChatRoomActivity extends AppCompatActivity {
         hope = (Button)findViewById(R.id.hope);
         notonlybus = (Button)findViewById(R.id.not_only_bus);
         wordcloud = (Button)findViewById(R.id.word_cloud);
+        iv_wordcloud = (ImageView)findViewById(R.id.show_pic);
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
@@ -169,23 +178,21 @@ public class ChatRoomActivity extends AppCompatActivity {
                 userQuery = "常見問題";
                 mchat.add(new Chat("sender", userQuery));
             }else if(action == 5) {
-                userQuery = "文字雲";
+                userQuery = "最近搞什麼";
 
 //                File localFile = File.createTempFile("images", "png");
-//                mStorageRef.child("wordcloud.png").getFile(localFile)
-//                        .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-//                            @Override
-//                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-//                                // Successfully downloaded data to local file
-//                                // ...
-//                            }
-//                        }).addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception exception) {
-//                        // Handle failed download
-//                        // ...
-//                    }
-//                });
+//                Log.d(TAG, "download" + localFile.getAbsolutePath());
+                mStorageRef.child("wordcloud.png").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Log.d(TAG, uri.toString());
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
 
                 mchat.add(new Chat("sender", userQuery));
             }else{
@@ -205,6 +212,8 @@ public class ChatRoomActivity extends AppCompatActivity {
 
         }catch (ActivityNotFoundException e){
             Toast.makeText(this, "POST Request error", Toast.LENGTH_SHORT).show();
+//        } catch (IOException e) {
+//            e.printStackTrace();
 //        } catch (IOException e) {
 //            e.printStackTrace();
         }
@@ -418,7 +427,7 @@ public class ChatRoomActivity extends AppCompatActivity {
                     mchat.add(new Chat("hope_well", s));
                     messageAdapter = new MessageAdapter(ChatRoomActivity.this, mchat);
                     recyclerView.setAdapter(messageAdapter);
-                }else if(userQuery == "文字雲") {
+                }else if(userQuery == "最近搞什麼") {
                     mchat.add(new Chat("word_cloud", "reply文字雲"));
                     messageAdapter = new MessageAdapter(ChatRoomActivity.this, mchat);
                     recyclerView.setAdapter(messageAdapter);
