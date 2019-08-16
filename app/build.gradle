@@ -42,6 +42,9 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'de.hdodenhof:circleimageview:3.0.0'
 
+    implementation 'com.github.bumptech.glide:glide:4.7.1'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
+
 
     api 'com.google.api-client:google-api-client-android:1.22.0'
     api 'com.google.apis:google-api-services-speech:v1beta1-rev336-1.22.0'

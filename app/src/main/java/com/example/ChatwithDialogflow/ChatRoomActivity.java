@@ -1,12 +1,16 @@
 package com.example.ChatwithDialogflow;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Point;
 import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -15,7 +19,12 @@ import android.text.SpannableStringBuilder;
 import android.text.style.ImageSpan;
 import android.text.util.Linkify;
 import android.util.Log;
+import android.view.Display;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -25,6 +34,7 @@ import android.widget.Toast;
 
 import com.example.ChatwithDialogflow.Adapter.MessageAdapter;
 import com.example.ChatwithDialogflow.Model.Chat;
+import com.example.ChatwithDialogflow.View.Thermometer;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.api.client.extensions.android.http.AndroidHttp;
@@ -37,14 +47,16 @@ import com.google.api.services.language.v1beta2.model.Document;
 import com.google.api.services.language.v1beta2.model.Entity;
 import com.google.api.services.language.v1beta2.model.Features;
 import com.google.api.services.language.v1beta2.model.Token;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-//import com.google.firebase.storage.FileDownloadTask;
-//import com.google.firebase.storage.FirebaseStorage;
-//import com.google.firebase.storage.StorageReference;
+
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -58,7 +70,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ChatRoomActivity extends AppCompatActivity {
 
@@ -73,11 +87,15 @@ public class ChatRoomActivity extends AppCompatActivity {
 //    TextView response;
     Button report, question, hope, notonlybus, wordcloud;
 
+    private Thermometer thermometer;
+
+    private int temperature = 0;
+
     ImageView iv_wordcloud;
 
     private DatabaseReference mDatabase;
     String userQuery;
-    ArrayList<String> entities = new ArrayList<>();
+    ArrayList<String> entities;
 
     private StorageReference mStorageRef;
     MessageAdapter messageAdapter;
@@ -86,6 +104,8 @@ public class ChatRoomActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     Intent intent;
+    public static String wordCloudPic;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +126,9 @@ public class ChatRoomActivity extends AppCompatActivity {
         notonlybus = (Button)findViewById(R.id.not_only_bus);
         wordcloud = (Button)findViewById(R.id.word_cloud);
         iv_wordcloud = (ImageView)findViewById(R.id.show_pic);
+//        thermometer = (Thermometer) findViewById(R.id.thermometer);
+//        thermometer.setCurrentTemp(temperature);
+
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
@@ -159,6 +182,8 @@ public class ChatRoomActivity extends AppCompatActivity {
         }
     };
 
+
+
     private void sendMessage() {
 //        Intent intent = new Intent();
 //        intent.putExtra("test", CUSTOM_POST_REQUEST);
@@ -182,10 +207,11 @@ public class ChatRoomActivity extends AppCompatActivity {
 
 //                File localFile = File.createTempFile("images", "png");
 //                Log.d(TAG, "download" + localFile.getAbsolutePath());
-                mStorageRef.child("wordcloud.png").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                mStorageRef.child("test1.jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
                         Log.d(TAG, uri.toString());
+                        wordCloudPic = uri.toString();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -321,13 +347,39 @@ public class ChatRoomActivity extends AppCompatActivity {
 
         final List<Entity> entityList = response.getEntities();
 
+        entities = new ArrayList<>();
         for (Entity entity : entityList) {
             entities.add(entity.getName());
         }
         Log.d(TAG, "Entity = " + entities);
 //        FirebaseDatabase database = FirebaseDatabase.getInstance();
 //        Log.d(TAG, "xxxx");
-        mDatabase.child("entities").setValue(entities);
+
+        final DatabaseReference databaseReference = mDatabase.child("entities");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(String entity:entities){
+                    int size = (int)dataSnapshot.getChildrenCount();
+//                System.out.println(size);
+                    Map<String,Object> childUpdates = new HashMap<>();
+                    childUpdates.put(String.valueOf(size), entity);
+                    databaseReference.updateChildren(childUpdates);
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+//        Map<String,Object> childUpdates = new HashMap<>();
+//        childUpdates.put("1", entities);
+//        databaseReference.updateChildren(childUpdates);
+
+//        mDatabase.child("entities").setValue(entities);
 
         final float sentiment = response.getDocumentSentiment().getScore();
         sentimentScore = response.getDocumentSentiment().getScore();
@@ -410,18 +462,20 @@ public class ChatRoomActivity extends AppCompatActivity {
             System.out.println("sentimentScore: " + sentimentScore);
             if(sentimentScore > 0.5){
 //                System.out.println("好正面: " + s);
+                thermometer.setCurrentTemp(temperature);
                 mchat.add(new Chat("receiver", Constants.POSITiVE_REPLY));
                 messageAdapter = new MessageAdapter(ChatRoomActivity.this, mchat);
                 recyclerView.setAdapter(messageAdapter);
             }else if(sentimentScore < -0.5) {
 //                System.out.println("好負面: " + s);
+                thermometer.setCurrentTemp(temperature);
                 mchat.add(new Chat("receiver", Constants.NEGATIVE_REPLY));
                 messageAdapter = new MessageAdapter(ChatRoomActivity.this, mchat);
                 recyclerView.setAdapter(messageAdapter);
             }else{
                 if(userQuery == "常見問題") {
                     mchat.add(new Chat("question_list", s));
-                    messageAdapter = new MessageAdapter(ChatRoomActivity.this, mchat);
+                    messageAdapter = new MessageAdapter(ChatRoomActivity.this, mchat, ed_input);
                     recyclerView.setAdapter(messageAdapter);
                 }else if(userQuery == "許願池") {
                     mchat.add(new Chat("hope_well", s));
@@ -437,11 +491,56 @@ public class ChatRoomActivity extends AppCompatActivity {
                     recyclerView.setAdapter(messageAdapter);
                 }
             }
+            if(sentimentScore > 0)
+                temperature = temperature + 1;
+            else
+                temperature = temperature - 1;
 
 
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+            AlertDialog alertDialog = dialogBuilder.create();
+            dialogBuilder.setCancelable(true);
+
+            alertDialog.show();
+            alertDialog.getWindow().setBackgroundDrawable(null);
+//            alertDialog.getWindow().setLayout(300, 400);
+
+//            WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+//            lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+//            lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+//            Log.d(TAG, lp)
+            Display display = getWindowManager().getDefaultDisplay();
+            Point size = new Point();
+            display.getSize(size);
+            int width = size.x;
+            int height = size.y;
+            Log.e("Width", "" + width);
+            Log.e("height", "" + height);
+
+            alertDialog.getWindow().setLayout(width/3, height/2);
 
 
+            LayoutInflater inflater = this.getLayoutInflater();
+            View dialogView = inflater.inflate(R.layout.thermometer, null);
+
+            alertDialog.getWindow().setContentView(dialogView);
+            thermometer = (Thermometer) dialogView.findViewById(R.id.thermometer);
+            thermometer.setCurrentTemp(temperature);
+//            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

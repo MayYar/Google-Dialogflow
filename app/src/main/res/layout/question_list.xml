@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="300dp"
+    android:layout_width="305dp"
     android:padding="8dp"
     android:layout_height="wrap_content">
 
@@ -29,7 +29,15 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="45dp"
         android:orientation="vertical"
-        android:background="@android:color/white">
+        android:background="@drawable/background_border">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="#1E88E5">
+
+        </TextView>
+
 
         <TextView
             android:id="@+id/test1"
@@ -37,9 +45,11 @@
             android:layout_height="wrap_content"
             android:text="路線規劃可變回中文站名嗎"
             android:layout_toRightOf="@+id/bus_image"
+            android:layout_margin="5dp"
+
             android:textSize="18sp"
             android:padding="8dp"
-            android:background="@drawable/background_left"
+            android:background="@drawable/textview_border"
             android:autoLink="all"/>
 
         <TextView
@@ -48,9 +58,11 @@
             android:layout_height="wrap_content"
             android:text="不能離線操作嗎？"
             android:layout_toRightOf="@+id/bus_image"
+            android:layout_margin="5dp"
+
             android:textSize="18sp"
             android:padding="8dp"
-            android:background="@drawable/background_left"
+            android:background="@drawable/textview_border"
             android:autoLink="all"/>
 
         <TextView
@@ -59,10 +71,19 @@
             android:layout_height="wrap_content"
             android:text="可不可以多個機車導航"
             android:layout_toRightOf="@+id/bus_image"
+            android:layout_margin="5dp"
             android:textSize="18sp"
             android:padding="8dp"
-            android:background="@drawable/background_left"
+            android:background="@drawable/textview_border"
             android:autoLink="all"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="5dp"
+            android:text="--點擊項目看詳情--"
+            android:textStyle="italic" />
     </LinearLayout>
 
 

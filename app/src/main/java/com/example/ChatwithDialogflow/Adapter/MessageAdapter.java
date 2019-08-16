@@ -3,7 +3,10 @@ package com.example.ChatwithDialogflow.Adapter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.Image;
+import android.os.AsyncTask;
 import android.text.SpannableStringBuilder;
 import android.text.style.EasyEditSpan;
 import android.text.style.ImageSpan;
@@ -22,26 +25,41 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.ChatwithDialogflow.Model.Chat;
 import com.example.ChatwithDialogflow.R;
 
+import java.io.InputStream;
 import java.util.ArrayList;
+
+import static com.example.ChatwithDialogflow.ChatRoomActivity.wordCloudPic;
 
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHolder> {
 
     private static final String TAG = "MessageAdapter";
 
+//    public static String wordCloudPic;
+
+
 //    public static int MSG_TYPE_RIGHT = 0;
 //    public static final int MSG_TYPE_RIGHT = 1;
 
     private Context mContext;
     private ArrayList<Chat> mChat = new ArrayList<>();
+    private EditText ed_input;
 
 
     public MessageAdapter(Context mContext, ArrayList<Chat> mChat) {
         this.mContext = mContext;
         this.mChat = mChat;
+    }
+
+    public MessageAdapter(Context mContext, ArrayList<Chat> mChat, EditText editText) {
+        this.mContext = mContext;
+        this.mChat = mChat;
+        this.ed_input = editText;
     }
 
     //從getItemViewType取得sender or receiver, create diff type holder, viewType即return value
@@ -100,17 +118,20 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
 
         }else if (chat.getMessage().contains("近期常見問題") ){  //
-//            SpannableStringBuilder builder = new SpannableStringBuilder();
-//            builder.append(chat.getMessage())
-//                    .append("測試" ,new TextView(mContext), 0)
-//                    .append(" ", new ImageSpan(mContext, R.drawable.notonlybus), 0)
-//                    .append("\n");
+            holder.test1.setOnClickListener(doClick);
+            holder.test2.setOnClickListener(doClick);
+            holder.test3.setOnClickListener(doClick);
+
+
 //
 //            holder.show_message.setText(builder);
 //            Linkify.addLinks(holder.show_message, Linkify.WEB_URLS);
         }else if (chat.getMessage().contains("reply文字雲") ){
 //            holder.word_cloud.setImageResource(R.drawable.bus);
-             holder.word_cloud.setImageResource(R.mipmap.ic_launcher);
+//             holder.word_cloud.setImageResource(R.mipmap.ic_launcher);
+//            Glide.with(mContext).load(wordCloudPic).into(holder.word_cloud);
+
+
 
         }else
             holder.show_message.setText(chat.getMessage());
@@ -124,7 +145,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     //define item in holder
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView show_message;
+        public TextView show_message, test1, test2, test3;
         public EditText hope_message;
         public Button btn_ok;
         public ImageView word_cloud;
@@ -135,6 +156,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             hope_message = itemView.findViewById(R.id.hope_message);
             btn_ok = itemView.findViewById(R.id.btn_ok);
             word_cloud = itemView.findViewById(R.id.show_pic);
+            test1 = itemView.findViewById(R.id.test1);
+            test2 = itemView.findViewById(R.id.test2);
+            test3 = itemView.findViewById(R.id.test3);
+
         }
     }
 
@@ -156,29 +181,49 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     private TextView.OnClickListener doClick = new TextView.OnClickListener() {
         @Override
         public void onClick(View view) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
 
-            final EditText input = new EditText(mContext);
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.MATCH_PARENT);
-            input.setLayoutParams(lp);
-            builder.setTitle("許願池")
-                    .setMessage("說出你的願望")
-                    .setView(input)
-                    .setPositiveButton("確定", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
+            switch (view.getId()){
+                case R.id.test1:
+                    ed_input.setText("路線規劃可變回中文站名嗎?");
+                    break;
+                case R.id.test2:
+                    ed_input.setText("不能離線操作嗎?");
+                    break;
+                case R.id.test3:
+                    ed_input.setText("可不可以多個機車導航");
+                    break;
 
-                        }
-                    })
-                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
+                case R.id.show_message:
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
 
-                        }
-                    })
-                    .show();
+                    final EditText input = new EditText(mContext);
+                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.MATCH_PARENT);
+                    input.setLayoutParams(lp);
+                    builder.setTitle("許願池")
+                            .setMessage("說出你的願望")
+                            .setView(input)
+                            .setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+
+                                }
+                            })
+                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+
+                                }
+                            })
+                            .show();
+                    break;
+
+            }
+
         }
     };
+
+
+
 }

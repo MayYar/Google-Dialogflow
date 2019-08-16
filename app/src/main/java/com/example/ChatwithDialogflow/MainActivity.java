@@ -8,6 +8,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
+import com.example.ChatwithDialogflow.View.Thermometer;
+
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class MainActivity extends AppCompatActivity {
 
     ImageButton helper;
@@ -16,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
 
         helper = (ImageButton)findViewById(R.id.ib_helper);
@@ -30,4 +37,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }
     };
+
+
 }

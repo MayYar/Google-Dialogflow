@@ -2,7 +2,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="300dp"
+    android:layout_width="wrap_content"
     android:padding="8dp"
     android:layout_height="wrap_content">
 
@@ -17,13 +17,9 @@
         android:id="@+id/show_pic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
         android:layout_toRightOf="@+id/bus_image"
-        android:autoLink="all"
-        android:padding="8dp"
-        android:text="hello"
-        android:textSize="18sp"
-        app:srcCompat="@drawable/bus" />
+        android:src="@drawable/wordcloud"
+        android:text="hello" />
 
 
 
