@@ -15,53 +15,49 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:layout_toRightOf="@+id/bus_image"
-        android:orientation="vertical">
+        >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/background_left">
 
         <TextView
             android:id="@+id/show_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="hello"
+            android:text="有什麼想要建議我們的嗎？快說出你的願望吧～"
+            android:textColor="#000000"
             android:layout_marginLeft="5dp"
             android:textSize="18sp"
             android:padding="8dp"
             android:autoLink="all"
-            android:background="@drawable/background_left"
+
             />
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="5dp"
+
+
+
+    </LinearLayout>
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="你的願望將會自動寄發給開發團隊！盡情許願吧"
             android:layout_marginLeft="5dp"
-            android:background="@drawable/background_left"
+            android:textSize="18sp"
             android:padding="8dp"
-            >
+            android:autoLink="all"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/background_left"
+            android:textColor="#000000"
+            />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
 
-                <EditText
-                    android:id="@+id/hope_message"
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:background="@drawable/background_border"
-                    android:padding="5dp"
-                    android:hint="說出你的願望吧！"
-                     />
-
-                <Button
-                    android:id="@+id/btn_ok"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="確定"
-                    android:layout_gravity="center_horizontal"
-                    />
-
-            </LinearLayout>
-        </ScrollView>
     </LinearLayout>
 </RelativeLayout>

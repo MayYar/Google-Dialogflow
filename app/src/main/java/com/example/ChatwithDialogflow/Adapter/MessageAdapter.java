@@ -66,6 +66,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        Log.d(TAG, "getViewType = " + viewType);
         if(viewType == 0) {
             View view = LayoutInflater.from(mContext).inflate(R.layout.chat_item_right, parent, false);
             return new MessageAdapter.ViewHolder(view);
@@ -91,20 +92,20 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
         Chat chat = mChat.get(position);
         Log.d(TAG, "(" +position + ") " + chat.getMessage());
-        if(chat.getMessage().equals("有什麼想要建議我們的嗎~快來說下你的願望吧！") ){    //許願池
+        if(chat.getMessage().contains("願望") ){    //許願池
 
 //            holder.hope_message.setVisibility(View.VISIBLE);
 //            holder.btn_ok.setVisibility(View.VISIBLE);
 
+            holder.show_message.setText(chat.getMessage());
 
-            SpannableStringBuilder builder = new SpannableStringBuilder();
-            builder.append(chat.getMessage())
-                    .append("\n")
-                    .append(" ", new ImageSpan(mContext, R.drawable.fountain), 0);
-
-            holder.show_message.setText(builder);
+//            SpannableStringBuilder builder = new SpannableStringBuilder();
+//            builder.append(chat.getMessage())
+//                    .append("\n")
+//                    .append(" ", new ImageSpan(mContext, R.drawable.fountain), 0);
+//
+//            holder.show_message.setText(builder);
 //            Linkify.addLinks(holder.show_message, Linkify.EMAIL_ADDRESSES);
-            holder.show_message.setOnClickListener(doClick);
         }else if (chat.getMessage().contains("來逛逛最新資訊吧！") ) {    //Forum
             SpannableStringBuilder builder = new SpannableStringBuilder();
             builder.append(chat.getMessage())
@@ -146,15 +147,13 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView show_message, test1, test2, test3;
-        public EditText hope_message;
-        public Button btn_ok;
+
         public ImageView word_cloud;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             show_message = itemView.findViewById(R.id.show_message);
-            hope_message = itemView.findViewById(R.id.hope_message);
-            btn_ok = itemView.findViewById(R.id.btn_ok);
+
             word_cloud = itemView.findViewById(R.id.show_pic);
             test1 = itemView.findViewById(R.id.test1);
             test2 = itemView.findViewById(R.id.test2);

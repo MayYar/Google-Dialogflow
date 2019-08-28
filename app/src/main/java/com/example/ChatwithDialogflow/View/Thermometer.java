@@ -60,6 +60,7 @@ public class Thermometer extends View {
             this.currentTemp = minTemp;
         } else {
             this.currentTemp = currentTemp;
+
         }
 
         invalidate();
@@ -72,9 +73,11 @@ public class Thermometer extends View {
     public void init(Context context, AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.Thermometer);
         outerCircleRadius = typedArray.getDimension(R.styleable.Thermometer_radius, 20f);
-        int outerColor = typedArray.getColor(R.styleable.Thermometer_outerColor, Color.BLACK);
+        int outerColor = typedArray.getColor(R.styleable.Thermometer_outerColor, Color.WHITE);
         int middleColor = typedArray.getColor(R.styleable.Thermometer_middleColor, Color.WHITE);
         int innerColor = typedArray.getColor(R.styleable.Thermometer_innerColor, Color.RED);
+//        int innerColor2 = typedArray.getColor(R.styleable.Thermometer_innerColor, Color.BLUE);
+
 
         typedArray.recycle();
 
@@ -92,6 +95,7 @@ public class Thermometer extends View {
 
         innerCircleRadius = middleCircleRadius - middleCircleRadius / 3;
         innerRectRadius = middleRectRadius - middleRectRadius / 3;
+
         innerPaint = new Paint();
         innerPaint.setColor(innerColor);
         innerPaint.setStyle(Paint.Style.FILL);

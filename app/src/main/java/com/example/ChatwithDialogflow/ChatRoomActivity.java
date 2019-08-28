@@ -29,6 +29,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -81,6 +82,7 @@ public class ChatRoomActivity extends AppCompatActivity {
 
     static float sentimentScore = 0;
 
+    private int hopeflag = 0, changeflag = 0;
 
     ImageButton btn_input;
     EditText ed_input;
@@ -91,7 +93,8 @@ public class ChatRoomActivity extends AppCompatActivity {
 
     private int temperature = 0;
 
-    ImageView iv_wordcloud;
+    ImageView iv_report, iv_wordcloud, iv_question;
+    LinearLayout layout1, layout2, layout3, layout4, layout5;
 
     private DatabaseReference mDatabase;
     String userQuery;
@@ -125,7 +128,15 @@ public class ChatRoomActivity extends AppCompatActivity {
         hope = (Button)findViewById(R.id.hope);
         notonlybus = (Button)findViewById(R.id.not_only_bus);
         wordcloud = (Button)findViewById(R.id.word_cloud);
+        iv_report = (ImageView)findViewById(R.id.iv_report);
+        iv_question = (ImageView)findViewById(R.id.iv_question);
         iv_wordcloud = (ImageView)findViewById(R.id.show_pic);
+        layout1 = (LinearLayout)findViewById(R.id.layout1);
+        layout2 = (LinearLayout)findViewById(R.id.layout2);
+        layout3 = (LinearLayout)findViewById(R.id.layout3);
+        layout4 = (LinearLayout)findViewById(R.id.layout4);
+        layout5 = (LinearLayout)findViewById(R.id.layout5);
+
 //        thermometer = (Thermometer) findViewById(R.id.thermometer);
 //        thermometer.setCurrentTemp(temperature);
 
@@ -156,14 +167,25 @@ public class ChatRoomActivity extends AppCompatActivity {
                     action = 0;
                     //User Input and run POST Request
                     sendMessage();
+                    if(hopeflag == 1)
+                        changeflag = 1;
+                    else
+                        changeflag = 0;
+
                     break;
                 case R.id.report:
                     action = 1;
+                    changeflag = 0;
+                    hopeflag = 0;
                     sendMessage();
+
                     break;
                 case R.id.hope:
                     action = 2;
                     sendMessage();
+                    changeflag = 0;
+                    hopeflag = 1;
+
                     break;
                 case R.id.not_only_bus:
                     action = 3;
@@ -171,12 +193,32 @@ public class ChatRoomActivity extends AppCompatActivity {
                     break;
                 case R.id.question:
                     action = 4;
+                    changeflag = 0;
+                    hopeflag = 0;
                     sendMessage();
                     break;
                 case R.id.word_cloud:
                     action = 5;
                     sendMessage();
                     break;
+            }
+
+            if(changeflag == 1) {
+                iv_report.setImageResource(R.drawable.please);
+                iv_question.setImageResource(R.drawable.cancel);
+                report.setText("許完了！我要寄出！");
+                question.setText("等等～我再思考一下");
+                layout3.setVisibility(View.INVISIBLE);
+                layout4.setVisibility(View.INVISIBLE);
+                layout5.setVisibility(View.INVISIBLE);
+            }else{
+                iv_report.setImageResource(R.drawable.report);
+                iv_question.setImageResource(R.drawable.question);
+                report.setText("立即回報");
+                question.setText("常見問題");
+                layout3.setVisibility(View.VISIBLE);
+                layout4.setVisibility(View.VISIBLE);
+                layout5.setVisibility(View.VISIBLE);
             }
 
         }
@@ -190,20 +232,25 @@ public class ChatRoomActivity extends AppCompatActivity {
         userQuery = ed_input.getText().toString();
 
         try {
-            if(action == 1){
-                userQuery = "立即回報";
+            if(hopeflag == 1) {
+                userQuery = ed_input.getText().toString();;
+                mchat.add(new Chat("sender", userQuery));
+                userQuery = "寄出希望";
+
+            } else if(action == 1){
+                userQuery = report.getText().toString();
                 mchat.add(new Chat("sender", userQuery));
             }else if(action == 2) {
-                userQuery = "許願池";
+                userQuery = hope.getText().toString();
                 mchat.add(new Chat("sender", userQuery));
             }else if(action == 3) {
-                userQuery = "不。只。是。等。公。車";
+                userQuery = notonlybus.getText().toString();
                 mchat.add(new Chat("sender", userQuery));
             }else if(action == 4) {
-                userQuery = "常見問題";
+                userQuery = question.getText().toString();
                 mchat.add(new Chat("sender", userQuery));
             }else if(action == 5) {
-                userQuery = "最近搞什麼";
+                userQuery = wordcloud.getText().toString();
 
 //                File localFile = File.createTempFile("images", "png");
 //                Log.d(TAG, "download" + localFile.getAbsolutePath());
@@ -224,6 +271,7 @@ public class ChatRoomActivity extends AppCompatActivity {
             }else{
                 mchat.add(new Chat("sender", userQuery));
             }
+
             Log.d(TAG, "User Query: " + userQuery);
 
             messageAdapter = new MessageAdapter(ChatRoomActivity.this, mchat);
@@ -459,29 +507,29 @@ public class ChatRoomActivity extends AppCompatActivity {
             super.onPostExecute(s);
 //            response.setText(s);
 //            Linkify.addLinks(response, Linkify.EMAIL_ADDRESSES);
-            System.out.println("sentimentScore: " + sentimentScore);
-            if(sentimentScore > 0.5){
+            System.out.println("sentimentScore: " + sentimentScore + " user query: " + userQuery);
+            if(sentimentScore > 0.7){
 //                System.out.println("好正面: " + s);
-                thermometer.setCurrentTemp(temperature);
-                mchat.add(new Chat("receiver", Constants.POSITiVE_REPLY));
+//                thermometer.setCurrentTemp(temperature);
+                mchat.add(new Chat("receiver", Constants.POSITIVE_REPLY));
                 messageAdapter = new MessageAdapter(ChatRoomActivity.this, mchat);
                 recyclerView.setAdapter(messageAdapter);
             }else if(sentimentScore < -0.5) {
 //                System.out.println("好負面: " + s);
-                thermometer.setCurrentTemp(temperature);
+//                thermometer.setCurrentTemp(temperature);
                 mchat.add(new Chat("receiver", Constants.NEGATIVE_REPLY));
                 messageAdapter = new MessageAdapter(ChatRoomActivity.this, mchat);
                 recyclerView.setAdapter(messageAdapter);
             }else{
-                if(userQuery == "常見問題") {
+                if(userQuery.equals("常見問題") ) {
                     mchat.add(new Chat("question_list", s));
                     messageAdapter = new MessageAdapter(ChatRoomActivity.this, mchat, ed_input);
                     recyclerView.setAdapter(messageAdapter);
-                }else if(userQuery == "許願池") {
+                }else if(userQuery.equals("許願池") ) {
                     mchat.add(new Chat("hope_well", s));
                     messageAdapter = new MessageAdapter(ChatRoomActivity.this, mchat);
                     recyclerView.setAdapter(messageAdapter);
-                }else if(userQuery == "最近搞什麼") {
+                }else if(userQuery.equals("最近搞什麼") ) {
                     mchat.add(new Chat("word_cloud", "reply文字雲"));
                     messageAdapter = new MessageAdapter(ChatRoomActivity.this, mchat);
                     recyclerView.setAdapter(messageAdapter);
@@ -491,10 +539,10 @@ public class ChatRoomActivity extends AppCompatActivity {
                     recyclerView.setAdapter(messageAdapter);
                 }
             }
-            if(sentimentScore > 0)
-                temperature = temperature + 1;
+            if(sentimentScore >= 0)
+                temperature = temperature - 10;
             else
-                temperature = temperature - 1;
+                temperature = temperature + 10;
 
 
         }

@@ -28,6 +28,7 @@
         android:padding="8dp"
         android:autoLink="all"
         android:background="@drawable/background_left"
+        android:textColor="#000000"
         />
 
     </LinearLayout>

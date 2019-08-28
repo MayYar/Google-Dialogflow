@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="305dp"
+    android:layout_width="wrap_content"
     android:padding="8dp"
     android:layout_height="wrap_content">
 
@@ -28,29 +28,77 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="45dp"
+        android:orientation="horizontal"
+        android:background="@drawable/background_border"
+        >
+
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:background="@drawable/background_border"-->
+            <!--android:text="以下為近期常見的問題，看看有沒有符合您的疑問～"-->
+            <!--android:textSize="18sp"-->
+            <!--android:layout_marginBottom="5dp"-->
+            <!--android:padding="8dp"/>-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="-5dp"
+                android:text="常見"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="#3949AB"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginRight="-5dp"
+
+                android:text="問題"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="#3949AB"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/question_icon"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                />
+        </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@drawable/background_border">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="5dp"
-            android:background="#1E88E5">
-
-        </TextView>
-
+        >
 
         <TextView
             android:id="@+id/test1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="路線規劃可變回中文站名嗎"
+            android:text="路線規劃可變回中文嗎?"
             android:layout_toRightOf="@+id/bus_image"
             android:layout_margin="5dp"
-
+            android:textColor="#000000"
             android:textSize="18sp"
             android:padding="8dp"
-            android:background="@drawable/textview_border"
             android:autoLink="all"/>
+
+        <View
+            android:layout_width="220dp"
+            android:layout_height="1dp"
+            android:layout_gravity="center"
+            android:background="#e1e1e1"/>
 
         <TextView
             android:id="@+id/test2"
@@ -59,33 +107,38 @@
             android:text="不能離線操作嗎？"
             android:layout_toRightOf="@+id/bus_image"
             android:layout_margin="5dp"
-
+            android:textColor="#000000"
             android:textSize="18sp"
             android:padding="8dp"
-            android:background="@drawable/textview_border"
             android:autoLink="all"/>
+
+        <View
+            android:layout_width="220dp"
+            android:layout_height="1dp"
+            android:layout_gravity="center"
+            android:background="#e1e1e1"/>
 
         <TextView
             android:id="@+id/test3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="可不可以多個機車導航"
+            android:text="可不可以多個機車導航?"
             android:layout_toRightOf="@+id/bus_image"
             android:layout_margin="5dp"
             android:textSize="18sp"
             android:padding="8dp"
-            android:background="@drawable/textview_border"
-            android:autoLink="all"/>
+            android:autoLink="all"
+            android:textColor="#000000"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="5dp"
-            android:text="--點擊項目看詳情--"
-            android:textStyle="italic" />
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center_horizontal"-->
+            <!--android:layout_marginBottom="5dp"-->
+            <!--android:text="&#45;&#45;點擊項目看詳情&#45;&#45;"-->
+            <!--android:textStyle="italic" />-->
     </LinearLayout>
-
+    </LinearLayout>
 
 
 </RelativeLayout>
